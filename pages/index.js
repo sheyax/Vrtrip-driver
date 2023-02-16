@@ -18,6 +18,12 @@ export default function Home({ Useroles }) {
         const res = await axios.get(
           "https://vrtrip-db.vercel.app/auth/driver/user",
           {
+              headers: {
+    Authorization: 'Bearer access_token',
+    'Content-Type': 'application/json'
+  }
+          },
+          {
             withCredentials: true,
           }
         );
