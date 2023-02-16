@@ -19,6 +19,12 @@ export default function EngineerAuth() {
           password,
         },
         {
+            headers: {
+    Authorization: 'Bearer access_token',
+    'Content-Type': 'application/json'
+  }
+        },
+        {
           withCredentials: true,
         }
       );
