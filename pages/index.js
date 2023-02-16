@@ -16,7 +16,7 @@ export default function Home({ Useroles }) {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/auth/driver/user",
+          "https://vrtrip-db.vercel.app/auth/driver/user",
           {
             withCredentials: true,
           }
