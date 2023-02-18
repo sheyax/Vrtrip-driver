@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Cookies from 'js-cookie'
 
 export default function EngineerAuth() {
   const [error, setError] = useState("");
@@ -27,9 +28,11 @@ export default function EngineerAuth() {
         alert("invalid details");
         setError("unsuccessful");
       } else {
+        const info = await res.data
+        const{token}= info
+        Cookies.set('jwt', token)
         alert("succesful");
         setError("");
-        console.log(await res.data);
         router.push("/engineerDash");
       }
     } catch (err) {

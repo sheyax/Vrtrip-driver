@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import DriverCard from "../Components/DriverCard";
 import TripCard from "../Components/TripCard";
+import Cookies from 'js-cookie'
 
 export default function Home({ Useroles }) {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function Home({ Useroles }) {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/auth/driver/user",
+          "https://vrtrip-db.vercel.app/auth/driver/user",
           {
             withCredentials: true,
           }
@@ -25,7 +26,8 @@ export default function Home({ Useroles }) {
         if (!res.data) {
         }
         const info = await res.data;
-
+        const {token}= info
+        Cookies.set('jwt',token)
         setUsername(info.username);
         setVehicleNumber(info.assignedVehicle);
         setTrips(info.dailyTrips);
