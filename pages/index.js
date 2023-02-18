@@ -26,8 +26,8 @@ export default function Home({ Useroles }) {
         if (!res.data) {
         }
         const info = await res.data;
-        const {token}= info
-        Cookies.set('jwt',token)
+        // const {token}= info
+        // Cookies.set('jwt',token)
         setUsername(info.username);
         setVehicleNumber(info.assignedVehicle);
         setTrips(info.dailyTrips);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-
+import Cookies from 'js-cookie'
 export default function Login() {
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
@@ -29,7 +29,9 @@ export default function Login() {
       } else {
         alert("succesful");
         setError("");
-        console.log(await res.data);
+        const info = await res.data;
+        const {token}= info
+        Cookies.set('jwt',token)
         router.push("/");
       }
     } catch (err) {
