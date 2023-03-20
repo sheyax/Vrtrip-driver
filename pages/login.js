@@ -18,6 +18,11 @@ export default function Login() {
           username,
           password,
         },
+        {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + jwtToken
+  },
      
         {
           withCredentials: true,
