@@ -20,8 +20,8 @@ export default function Login() {
         },
         {
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + jwtToken
+    'Content-Type': 'application/json'
+    
   }
         },
      
