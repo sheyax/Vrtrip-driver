@@ -13,30 +13,24 @@ export default function EngineerAuth() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "https://vrtrip-db.vercel.app/auth/engineer/login",
-        {
-          engineerId: username,
-          password,
-        },
-        {
-            headers: {
-    Authorization: 'Bearer access_token',
-    'Content-Type': 'application/json'
-  }
-        },
-        {
-          withCredentials: true,
-        }
+      const res = await fetch("https://vrtrip-db.vercel.app/auth/engineer/login",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials:'include',
+        body: JSON.stringify({
+          username,
+          password
+        })
+      }
       );
 
-      if (res.data.status == "Failed") {
+      const data = await res.json();
+      if (data == "Failed") {
         alert("invalid details");
         setError("unsuccessful");
       } else {
-        const info = await res.data
-        const{token}= info
-        Cookies.set('jwt', token)
+        const info = data
+        
         alert("succesful");
         setError("");
         router.push("/engineerDash");
