@@ -13,7 +13,7 @@ export default function Register() {
     e.preventDefault();
     try {
       const response = await axios(
-        "https://vrtrip-db.vercel.app/auth/driver/register",
+        "https://8vsqx6-5000.csb.app/auth/driver/register",
         {
           method: "POST",
           headers: {

@@ -20,7 +20,7 @@ export default function TripLog() {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          "https://vrtrip-db.vercel.app/auth/driver/user",
+          "https://8vsqx6-5000.csb.app/auth/driver/user",
           {
             withCredentials: true,
           }
@@ -54,7 +54,7 @@ export default function TripLog() {
       };
 
       const res = await axios.put(
-        `https://vrtrip-db.vercel.app/auth/driver/trip/${userId}`,
+        `https://8vsqx6-5000.csb.app/auth/driver/trip/${userId}`,
         {
           date,
           startTime,

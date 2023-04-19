@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import DriverCard from "../Components/DriverCard";
 import TripCard from "../Components/TripCard";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 export default function Home({ Useroles }) {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function Home({ Useroles }) {
     const getUser = async () => {
       try {
         const res = await axios.get(
-          "https://vrtrip-db.vercel.app/auth/driver/user",
+          "https://8vsqx6-5000.csb.app/auth/driver/user",
           {
             withCredentials: true,
           }
@@ -72,9 +72,7 @@ export default function Home({ Useroles }) {
 
   const logout = async () => {
     try {
-      const res = await axios.delete(
-        "https://vrtrip-db.vercel.app/auth/logout"
-      );
+      const res = await axios.delete("https://8vsqx6-5000.csb.app/auth/logout");
 
       router.push("/login");
     } catch (err) {}
