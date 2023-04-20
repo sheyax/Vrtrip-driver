@@ -34,6 +34,7 @@ export default function Login() {
       );
 
       const data = res.data;
+
       if (data.status == "Failed") {
         alert("invalid details");
         setError("unsuccessful");
@@ -41,6 +42,7 @@ export default function Login() {
         alert("succesful");
         setError("");
         const info = data;
+
         // const { token } = info
         // Cookies.set('jwt', token)
         router.push("/");

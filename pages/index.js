@@ -5,6 +5,7 @@ import DriverCard from "../Components/DriverCard";
 import TripCard from "../Components/TripCard";
 import Cookies from "js-cookie";
 
+
 export default function Home({ Useroles }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -12,6 +13,8 @@ export default function Home({ Useroles }) {
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [trips, setTrips] = useState([]);
   const [userRole, setUserRole] = useState("");
+  
+  
   //get user
   useEffect(() => {
     const getUser = async () => {
