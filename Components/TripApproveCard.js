@@ -58,15 +58,16 @@ export default function TripApproveCard({
 
           <div className="mx-5 p-2">
             <button
-              onClick={() => {
+              onClick={async () => {
                 try {
-                  const res = axios.put(
-                    `https://vrtrip-db.vercel.app/feed/driver/${driverId}/dailytrips/${tripId}`,
+                  const res = await axios.put(
+                    `https://8vsqx6-5000.csb.app/feed/driver/${driverId}/dailytrips/${tripId}`,
                     {
                       withCredentials: true,
                     }
                   );
-                  console.log("succesful");
+
+                  console.log("succesful", await res.data);
                   alert("approved");
                   router.reload(window.location.engineerDash);
                 } catch (err) {

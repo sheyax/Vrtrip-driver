@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -9,31 +10,30 @@ export default function Register() {
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
 
+  const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios(
-        "https://vrtrip-db.vercel.app/auth/driver/register",
+      const response = await axios.post(
+        `${process.env.BACKEND_URL}/auth/driver/register`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          credentials: true,
-          data: {
-            username,
-            password: password,
-            driverId,
-            vehicle: vehicleNumber,
-            vehicleModel,
-          },
+          username,
+          password: password,
+          driverId,
+          vehicle: vehicleNumber,
+          vehicleModel,
+        },
+        {
+          withCredentials: true,
         }
       );
       alert("succesful");
-      console.log(response.json());
+      console.log(response.data);
+      router.push("/login");
     } catch (err) {
       setError("unsuccessful");
+      console.log(err);
     }
   };
 
