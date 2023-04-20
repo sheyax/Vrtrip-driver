@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DriverCard from "../Components/DriverCard";
 import TripApproveCard from "../Components/TripApproveCard";
+import { useRouter } from "next/router";
 
 export default function EngineerDash() {
   const [driverId, setDriverId] = useState("");
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [trips, setTrips] = useState([]);
   const [driverName, setDriverName] = useState("");
+  const router = useRouter();
   //get Engineer
   useEffect(() => {
     const getDriver = async (id) => {
       try {
         const res = await axios.get(
-          `https://8vsqx6-5000.csb.app/feed/drivers/${id}`,
+          `${process.env.BACKEND_URL}/feed/drivers/${id}`,
           {
             withCredentials: true,
           }
@@ -30,7 +32,7 @@ export default function EngineerDash() {
     const getEng = async () => {
       try {
         const res = await axios.get(
-          "https://8vsqx6-5000.csb.app/auth/engineer/user",
+          `${process.env.BACKEND_URL}/auth/engineer/user`,
           {
             withCredentials: true,
           }
@@ -45,8 +47,24 @@ export default function EngineerDash() {
     getEng();
   }, []);
 
+  const logout = async () => {
+    try {
+      const res = await axios.delete(
+        `${process.env.BACKEND_URL}/auth/eng/logout`
+      );
+
+      router.push("/login");
+    } catch (err) {
+      console.log("logout error", err);
+    }
+  };
+
   return (
     <div>
+      {/* logout */}
+      <p className="text-sm text-red-500 p-2" onClick={logout}>
+        Logout
+      </p>
       <DriverCard name={driverName} vehicle={vehicleNumber} />{" "}
       <div className="flex justify-between items-center mx-5">
         <h1 className="text-xl p-2  font-bold text-gray-700"> Trips </h1>

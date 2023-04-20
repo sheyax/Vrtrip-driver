@@ -21,12 +21,12 @@ export default function FooterMenu() {
         >
           <h1>New Log</h1>
         </Link>
-        <Link
+        {/* <Link
           href="/"
           className="hover:scale-105 hover:font-semibold transition transfrom duration-300 ease-out"
         >
           <h1>Fuel</h1>
-        </Link>
+        </Link> */}
       </div>
     </footer>
   );
