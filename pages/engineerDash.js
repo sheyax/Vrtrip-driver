@@ -50,7 +50,7 @@ export default function EngineerDash() {
   const logout = async () => {
     try {
       const res = await axios.delete(
-        `${process.env.BACKEND_URL}/auth/eng/logout`
+        `${process.env.BACKEND_URL}/auth/logout`
       );
 
       router.push("/login");

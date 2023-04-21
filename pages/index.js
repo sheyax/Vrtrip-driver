@@ -75,7 +75,7 @@ export default function Home({ Useroles }) {
 
   const logout = async () => {
     try {
-      const res = await axios.delete(`${process.env.BACKEND_URL}/auth/logout`);
+      const res = await axios.post(`${process.env.BACKEND_URL}/auth/logout`);
 
       router.push("/login");
     } catch (err) {}
@@ -87,7 +87,10 @@ export default function Home({ Useroles }) {
     <div>
       <div>
         {/* logout */}
-        <p className="text-sm text-red-500 p-2" onClick={logout}>
+        <p className="text-sm text-center font-semibold
+         text-white p-2 cursor-pointer
+          bg-red-500 w-1/4 mx-2 my-2 
+          rounded-lg hover:scale-95 transition duration-200 ease-out" onClick={logout}>
           Logout
         </p>
       </div>

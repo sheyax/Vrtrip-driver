@@ -92,7 +92,9 @@ export default function Login() {
             onClick={() => {
               router.push("/engineerauth");
             }}
-            className="p-2 text-md text-blue-500 hover:scale-102 transition transfrom duration-300 ease-out curso-pointer "
+            className="p-2 text-md text-neutral-500 
+            hover:font-semibold hover:text-blue-500
+             text-center transition duration-200 ease-in cursor-pointer "
           >
             Engineer Login{" "}
           </h1>{" "}

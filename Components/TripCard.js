@@ -29,7 +29,7 @@ export default function TripCard({
       </div>
 
       {showContent && (
-        <div>
+        <div >
           <div className="flex justify-between mx-5 p-2 text-gray-600">
             <p>{startLoc}</p>
             <p className="text-sm px-2 border-solid border-2 border-gray-700 rounded-full">
