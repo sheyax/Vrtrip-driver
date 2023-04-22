@@ -101,9 +101,10 @@ export default function Home({ Useroles }) {
 
         <p className="text-gray-600">Total Milage: {totalTrip} Km</p>
       </div>
-      {trips?.map((trip) => (
+      {trips?.map((trip, i) => (
         <div key={trip._id}>
           <TripCard
+          index= {i}
             key={trip.startTime}
             date={trip.date}
             startOdo={trip.startOdometer}

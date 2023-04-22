@@ -47,9 +47,34 @@ export default function EngineerDash() {
     getEng();
   }, []);
 
+
+
+
+  //Approve function 
+
+  const onApprove= async (driverIdd, tripId) => {
+    try {
+      const res = await axios.put(
+        `${process.env.BACKEND_URL}/feed/driver/${driverIdd}/dailytrips/${tripId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("succesful", await res.data);
+      alert("approved");
+      router.reload(window.location.engineerDash);
+    } catch (err) {
+      console.log("unsuccessful", err);
+    }
+  }
+
+
+  //logout
+
   const logout = async () => {
     try {
-      const res = await axios.delete(
+      const res = await axios.post(
         `${process.env.BACKEND_URL}/auth/logout`
       );
 
@@ -62,9 +87,12 @@ export default function EngineerDash() {
   return (
     <div>
       {/* logout */}
-      <p className="text-sm text-red-500 p-2" onClick={logout}>
-        Logout
-      </p>
+      <p className="text-sm text-center font-semibold
+         text-white p-2 cursor-pointer
+          bg-red-500 w-1/4 mx-2 my-2 
+          rounded-lg hover:scale-95 transition duration-200 ease-out" onClick={logout}>
+          Logout
+        </p>
       <DriverCard name={driverName} vehicle={vehicleNumber} />{" "}
       <div className="flex justify-between items-center mx-5">
         <h1 className="text-xl p-2  font-bold text-gray-700"> Trips </h1>
@@ -84,6 +112,7 @@ export default function EngineerDash() {
             approved={trip.aprroved}
             driverId={driverId}
             tripId={trip._id}
+            onApprove={()=>onApprove(driverId, trip._id)}
           />{" "}
         </div>
       ))}{" "}

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 export default function TripApproveCard({
+  onApprove,
   date,
   startOdo,
   endOdo,
@@ -19,7 +20,7 @@ export default function TripApproveCard({
   const router = useRouter();
 
   return (
-    <div className={!approved ? "bg-red-200 " : "bg-green-200"}>
+    <div className={!approved ? "bg-red-200  border border-black my-2 rounded-md cursor-pointer" : "bg-white  border border-black my-2 rounded-md cursor-pointer"}>
       <div
         className="flex justify-between text-gray-700 p-3 mx-5 my-2 text-sm"
         onClick={() => setShowContent(!showContent)}
@@ -58,22 +59,7 @@ export default function TripApproveCard({
 
           <div className="mx-5 p-2">
             <button
-              onClick={async () => {
-                try {
-                  const res = await axios.put(
-                    `https://8vsqx6-5000.csb.app/feed/driver/${driverId}/dailytrips/${tripId}`,
-                    {
-                      withCredentials: true,
-                    }
-                  );
-
-                  console.log("succesful", await res.data);
-                  alert("approved");
-                  router.reload(window.location.engineerDash);
-                } catch (err) {
-                  console.log("unsuccessful", err);
-                }
-              }}
+              onClick={onApprove}
               className={
                 approved
                   ? "hidden"

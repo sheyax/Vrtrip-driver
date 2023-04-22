@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function TripCard({
+  index,
   date,
   startOdo,
   endOdo,
@@ -13,24 +14,24 @@ export default function TripCard({
   const [showContent, setShowContent] = useState();
   const totalTrip = endOdo - startOdo;
   return (
-    <div className={!approved ? "bg-red-200 " : "bg-green-200"}>
+    <div className={!approved ? "bg-red-200  border border-black my-2 rounded-md cursor-pointer" : "bg-white  border border-black my-2 rounded-md cursor-pointer"}>
       <div
-        className="flex justify-between text-gray-700 p-3 mx-5 my-2 text-sm"
-        onClick={() => setShowContent(!showContent)}
+        className="flex justify-between items-center text-gray-700 p-3 mx-5 my-2 text-sm cursor-pointer"
+        onClick={() => {setShowContent(!showContent)}}
       >
-        <p>{date}</p>
-        <p>{totalTrip} Km</p>
+        <p className={showContent? 'font-semibold duration-200 ease-in-out':''}>{date}</p>
+        <p className={showContent? 'font-semibold duration-200 ease-in-out':''}>{totalTrip} Km </p>
 
-        <div>
+        <div className={showContent? 'font-semibold duration-200 ease-in-out':''}>
           <p>
             {startTime} - {endTime}
           </p>
         </div>
       </div>
 
-      {showContent && (
-        <div >
-          <div className="flex justify-between mx-5 p-2 text-gray-600">
+     
+        <div className={showContent? ' duration-500 ease-out':'hidden'} >
+          <div className="flex justify-between mx-5 p-2 text-gray-600 duration-200 ">
             <p>{startLoc}</p>
             <p className="text-sm px-2 border-solid border-2 border-gray-700 rounded-full">
               {startOdo}
@@ -50,7 +51,7 @@ export default function TripCard({
             </p>
           </div>
         </div>
-      )}
+     
     </div>
   );
 }
