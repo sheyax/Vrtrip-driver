@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 export default function TripCard({
@@ -10,9 +11,12 @@ export default function TripCard({
   startTime,
   endTime,
   approved,
+  completed
 }) {
   const [showContent, setShowContent] = useState();
   const totalTrip = endOdo - startOdo;
+
+  const router= useRouter()
   return (
     <div className={!approved ? "bg-red-200  border border-black my-2 rounded-md cursor-pointer" : "bg-white  border border-black my-2 rounded-md cursor-pointer"}>
       <div
@@ -39,7 +43,7 @@ export default function TripCard({
           </div>
 
           <div className="bg-gray-600 text-white rounded-l-full ml-5 p-2">
-            <h1 className="ml-5 font-bold">{totalTrip} Km</h1>
+            <h1 className="ml-5 font-bold">{completed? totalTrip: 'in Progress . . .'} Km</h1>
           </div>
           <div className="flex justify-between mx-5 p-2 text-gray-600">
             <p>{endLoc}</p>
@@ -49,6 +53,19 @@ export default function TripCard({
             >
               {endOdo}
             </p>
+          </div>
+
+          <div className="mx-5 p-2">
+            <button
+            onClick={() => router.push(`trips/${index}`)}
+              className={
+                completed
+                  ? "hidden"
+                  : "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              }
+            >
+             Update trip
+            </button>
           </div>
         </div>
      

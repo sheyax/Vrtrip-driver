@@ -19,7 +19,7 @@ export default function FooterMenu() {
           className="bg-blue-300 p-3 rounded-xl 
         font-semibold text-sm hover:scale-105 transition transfrom duration-300 ease-out"
         >
-          <h1>New Log</h1>
+          <h1>New Trip</h1>
         </Link>
         {/* <Link
           href="/"

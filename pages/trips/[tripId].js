@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Select from 'react-select'
-import {
-  SelectBox,
-  SelectBoxItem,
-  MultiSelectBox,
-  MultiSelectBoxItem,
-} from "@tremor/react";
+import { useEffect, useState } from "react";
 
-import bcrypt from 'bcryptjs'
 
-export default function TripLog() {
-  const [startTime, setStartTime] = useState("");
+
+const TripUpdate = () => {
+    const router= useRouter()
+    const data=router.query.tripId
+    const [userId, setUserId] = useState("");
+    const [trips, setTrips] = useState([]);
+  const [currentTrip, setCurrentTrip]= useState({});
+
+   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [date, setDate] = useState("");
   const [startLocation, setStartLocation] = useState("");
@@ -20,34 +19,25 @@ export default function TripLog() {
   const [endOdometer, setEndOdometer] = useState("");
   const [startOdometer, setStartOdometer] = useState("");
   const [completed, setCompleted] = useState(false);
-  const [engineers, setEngineers] = useState()
-  const [engineer, setEngineer]=useState("")
-  const [userId, setUserId] = useState("");
-  const [trips, setTrips] = useState([]);
-  const router = useRouter();
-  const [supervisor,setSupervisor] = useState()
-  
+  const [supervisor, setSupervisor] = useState("")
 
-
-  //get user
+      //get user
   useEffect(() => {
-    const getEngineers =async () =>{
-      try {
-          const res = await axios.get(
-            `${process.env.BACKEND_URL}/feed/engineers`,
-            {
-              withCredentials: true,
-            }
-          );
-          const info = await res.data
-  
-          setEngineers(info);
-          console.log('eng',engineers)
-        } catch (err) {
-          console.log("cannot engineers data", err);
-        }
-  
-  }
+    // const getTrip= async (driverId, tripId) => {
+    //     try{
+    //         const res= await axios.get(`${process.env.BACKEND_URL}/feed/driver/${driverId}/dailytrips/${tripId}`,
+    //         {
+    //             withCredentials: true,
+    //           });
+
+    //           const info = await res.data;
+    //           console.log(info)
+
+    //     }catch (err){
+    //         console.log(err)
+    //     }
+    // }
+
 
     const getUser = async () => {
       try {
@@ -64,19 +54,43 @@ export default function TripLog() {
         const info = await res.data;
         setUserId(info._id);
         setTrips(info.dailyTrips);
-        setSupervisor(info.supervisor)
+
+
+//get tripdata
+
+      trips.forEach((trip)=>{
+    if(trip._id=== data){
+      setDate(trip.date)
+      setStartTime(trip.startTime)
+     
+      setStartLocation(trip.startLocation)
+      setEndLocation(trip.endLocation)
+      setStartOdometer(trip.startOdometer)
+      setSupervisor(trip.supervisor)
+
+      if(trip.endOdometer !== ''){
+        setEndOdometer(trip.endOdometer)
+      }
+
+      if(trip.endTime !== ''){
+        setEndTime(trip.endTime)
+      }
+      
+        return
+    }
+})
       } catch (err) {
         console.log("Error getting user", err);
-        router.push("/");
       }
     };
 
     getUser();
-    getEngineers();
-  }, []);
+  }, [trips]);
 
 
-  const onComplete = (e) => {
+
+//complete trip
+const onComplete = (e) => {
   
     if(e.target.checked){
       setCompleted(completed)
@@ -90,28 +104,49 @@ export default function TripLog() {
   }
 
 
+  const saveSupervisor= async () =>{
+    const res = await axios.put(
+      `${process.env.BACKEND_URL}/feed/supervisor/${supervisor}/toApprove`,
+      {
+        date:date,
+        startLocation,
+        startTime,
+        startMileage: startOdometer,
+        endTime,
+        endLocation,
+        endMileage: endOdometer,
+        tripId: data,
+        driver: userId,
+        completed
+      }
+    );
 
+    if (!res.data) {
+      console.log('error saving to supervisor ')
+    } else {
+     console.log('success saving to supervisor ')
+    }
+  }
+
+
+
+
+  //update trip 
   const onSave = async () => {
     try {
       
-      const identifier = await bcrypt.hash(startLocation, 10)
-      console.log(identifier)
+
       const res = await axios.put(
-        `${process.env.BACKEND_URL}/auth/driver/trip/${userId}`,
+        `${process.env.BACKEND_URL}/feed/driver/${userId}/dailytrips/complete/${data}`,
         {
-          date,
-          startTime,
           endTime,
-          startLocation,
-          identifier,
           endLocation,
-          startOdometer,
           endOdometer,
-          supervisor: engineer.value,
-          completed,
-          //cretaedAt: new Date.now()
+          completed
         }
       );
+
+      saveSupervisor()
 
       if (!res.data) {
         alert("unsuccessful");
@@ -121,12 +156,15 @@ export default function TripLog() {
       }
     } catch (err) {}
   };
-//console.log('engineer',engineer.value)
-  return (
-    <div className="">
-      <h1 className="p-3 font-semibold m-auto text-center">Daily Trip Log</h1>
 
-      {/* Time */}
+
+
+
+  
+
+    return ( <div>
+       <h1 className="p-3 font-semibold m-auto text-center">Trip Log</h1>
+           {/* Time */}
       <div className="m-auto w-4/5">
         <div className="flex items-center">
           <p>Date</p>
@@ -230,27 +268,11 @@ export default function TripLog() {
               className="outline-none  bg-transparent border-b border-gray-600 text-sm"
             />
           </div>
-
-         
         </div>
-
-<h1>Signage</h1>
-
-
-    <Select
-    value={engineer}
-    onChange={(option)=>setEngineer(option)}
-    options={
-      engineers?.map(item =>({
-        value: item._id,
-        label: item.name
-      }))
-    }
-    />
 
         <div className="flex justify-between">
         <button
-          onClick={onSave}
+        onClick={onSave}
           className="bg-green-500 p-2 w-1/4 mt-5 text-white font-semibold "
         >
           Save
@@ -267,6 +289,7 @@ onChange={onComplete}
 </div>
         </div>
       </div>
-    </div>
-  );
+    </div> );
 }
+ 
+export default TripUpdate;

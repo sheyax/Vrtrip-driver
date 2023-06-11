@@ -13,10 +13,47 @@ export default function Home({ Useroles }) {
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [trips, setTrips] = useState([]);
   const [userRole, setUserRole] = useState("");
+  const [car, setCar]=useState()
+  const [sup, setSup]=useState()
+
   
   
   //get user
   useEffect(() => {
+    const getVehicle=async  (id) =>{
+      try{
+        const res = await axios.get(
+          `${process.env.BACKEND_URL}/feed/vehicles/${id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        const info = await res.data
+        setCar(info._doc)
+        setVehicleNumber(car.carNumber)
+  
+      }catch(err){
+        console.log('error geeting vehicle', err)
+      }
+    }
+
+    const getSup=async  (id) =>{
+      try{
+        const res = await axios.get(
+          `${process.env.BACKEND_URL}/feed/engineers/${id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        const info = await res.data
+        setSup(info._doc)
+      console.log(sup)
+  
+      }catch(err){
+        console.log('error geeting vehicle', err)
+      }
+    }
+
     const getUser = async () => {
       try {
         const res = await axios.get(
@@ -32,7 +69,8 @@ export default function Home({ Useroles }) {
         // const {token}= info
         // Cookies.set('jwt',token)
         setUsername(info.username);
-        setVehicleNumber(info.assignedVehicle);
+        getVehicle(info.assignedVehicle);
+        getSup(info.supervisor)
         setTrips(info.dailyTrips);
         setUserRole(info.roles);
       } catch (err) {
@@ -94,7 +132,7 @@ export default function Home({ Useroles }) {
           Logout
         </p>
       </div>
-      <DriverCard name={username} vehicle={vehicleNumber} />
+      <DriverCard name={username} vehicle={vehicleNumber} se={sup?.name} />
 
       <div className="flex justify-between items-center mx-5">
         <h1 className="text-xl p-2  font-bold text-gray-700">Trips</h1>
@@ -104,7 +142,7 @@ export default function Home({ Useroles }) {
       {trips?.map((trip, i) => (
         <div key={trip._id}>
           <TripCard
-          index= {i}
+          index= {trip._id}
             key={trip.startTime}
             date={trip.date}
             startOdo={trip.startOdometer}
@@ -114,9 +152,10 @@ export default function Home({ Useroles }) {
             startLoc={trip.startLocation}
             endLoc={trip.endLocation}
             approved={trip.aprroved}
+            completed={trip.completed}
           />
         </div>
-      ))}
+      )).reverse()}
     </div>
   );
 }
